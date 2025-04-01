@@ -765,6 +765,9 @@ void BaseMapper::map_legate_stores_(Legion::Mapping::MapperContext ctx,
       logger().debug() << log_mappable(mappable) << " failed to map all stores, retrying with "
                        << "tighter policies";
     }
+
+    invoke_mapper_failure_callback_();
+
     // If instance creation failed we try mapping all stores again, but request tight instances for
     // write requirements. The hope is that these write requirements cover the entire region (i.e.
     // they use a complete partition), so the new tight instances will invalidate any pre-existing
@@ -1962,6 +1965,14 @@ std::string_view BaseMapper::retrieve_alloc_info_(Legion::Mapping::MapperContext
     }
   }
   return "(unknown provenance)";
+}
+
+
+void BaseMapper::invoke_mapper_failure_callback_()
+{
+  if (mapper_failure_callback_){
+    mapper_failure_callback_();
+  }
 }
 
 }  // namespace legate::mapping::detail

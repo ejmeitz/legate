@@ -336,6 +336,11 @@ void Runtime::register_shutdown_callback_(ShutdownCallback callback)
   detail::Runtime::get_runtime()->register_shutdown_callback(std::move(callback));
 }
 
+void Runtime::register_mapper_failure_callback_(MapperFailureCallback callback)
+{
+  detail::Runtime::get_runtime()->register_mapper_failure_callback(std::move(callback));
+}
+
 mapping::Machine Runtime::get_machine() const { return Scope::machine(); }
 
 Processor Runtime::get_executing_processor() const { return impl()->get_executing_processor(); }

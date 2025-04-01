@@ -1856,6 +1856,17 @@ void Runtime::register_shutdown_callback(ShutdownCallback callback)
   callbacks_.emplace_back(std::move(callback));
 }
 
+void Runtime::register_mapper_failure_callback(MapperFailureCallback callback){
+    //TODO THIS IS NOT HOW YOU ACCESS THE MAPPER
+    // Through library???
+    mapper->register_mapper_failure_callback_(std::move(callback))
+}
+
+{
+  callbacks_.emplace_back(std::move(callback));
+}
+
+
 std::int32_t Runtime::finish()
 {
   if (!has_started()) {

@@ -35,6 +35,7 @@ using LegionVariantImpl = T (*)(const Legion::Task*,
                                 Legion::Context,
                                 Legion::Runtime*);
 using ShutdownCallback  = std::function<void(void)>;
+using MapperFailureCallback = std::function<void(void)>;
 
 // The size of this enum is deliberate
 enum class VariantCode : Legion::VariantID {  // NOLINT(performance-enum-size)

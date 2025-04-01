@@ -660,6 +660,9 @@ class Runtime {
   template <typename T>
   void register_shutdown_callback(T&& callback);
 
+  template <typename T>
+  void register_mapper_failure_callback(T&& callback);
+
   /**
    * @brief Returns the total number of nodes
    *
@@ -714,6 +717,7 @@ class Runtime {
  private:
   explicit Runtime(detail::Runtime* runtime);
   void register_shutdown_callback_(ShutdownCallback callback);
+  void register_mapper_failure_callback_(MapperFailureCallback callback);
 
   detail::Runtime* impl_{};
 };
@@ -787,6 +791,22 @@ void start();
  */
 template <typename T>
 void register_shutdown_callback(T&& callback);
+
+/**
+ * @brief Registers a callback that should be invoked upon mapper failure
+ *
+ * Any callbacks will be invoked before the core library and the runtime are destroyed. All
+ * callbacks must be non-throwable. Multiple registrations of the same callback are not
+ * deduplicated, and thus clients are responsible for registering their callbacks only once if they
+ * are meant to be invoked as such. Callbacks are invoked in the FIFO order, and thus any callbacks
+ * that are registered by another callback will be added to the end of the list of callbacks.
+ * Callbacks can launch tasks and the runtime will make sure of their completion before initializing
+ * its shutdown.
+ *
+ * @param callback A mapper failure callback
+ */
+template <typename T>
+void register_mapper_failure_callback(T&& callback);
 
 /**
  * @brief Returns the machine for the current scope

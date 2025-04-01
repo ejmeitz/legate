@@ -235,6 +235,7 @@ class BaseMapper final : public Legion::Mapping::Mapper, public MachineQueryInte
   void handle_instance_collection(Legion::Mapping::MapperContext ctx,
                                   const Legion::Mapping::PhysicalInstance& inst) override;
 
+
  private:
   using OutputMap = std::unordered_map<const Legion::RegionRequirement*,
                                        std::vector<Legion::Mapping::PhysicalInstance>*>;
@@ -300,6 +301,11 @@ class BaseMapper final : public Legion::Mapping::Mapper, public MachineQueryInte
                                                       Legion::FieldSpace fs,
                                                       Legion::FieldID fid);
 
+  // registration should occur through runtime
+  void register_mapper_failure_callback_(MapperFailureCallback callback);
+  void invoke_mapper_failure_callback_();
+
+
   Legion::Machine legion_machine_{Legion::Machine::get_machine()};
   Legion::Logger logger_{std::string{LOGGER_NAME}};
 
@@ -314,6 +320,8 @@ class BaseMapper final : public Legion::Mapping::Mapper, public MachineQueryInte
   LocalMachine local_machine_{};
 
   std::string mapper_name_{};
+
+  std::function<void()> mapper_failure_callback_{};
 };
 
 }  // namespace legate::mapping::detail
