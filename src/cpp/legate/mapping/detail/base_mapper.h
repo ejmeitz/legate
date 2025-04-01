@@ -235,7 +235,6 @@ class BaseMapper final : public Legion::Mapping::Mapper, public MachineQueryInte
   void handle_instance_collection(Legion::Mapping::MapperContext ctx,
                                   const Legion::Mapping::PhysicalInstance& inst) override;
 
-
  private:
   using OutputMap = std::unordered_map<const Legion::RegionRequirement*,
                                        std::vector<Legion::Mapping::PhysicalInstance>*>;

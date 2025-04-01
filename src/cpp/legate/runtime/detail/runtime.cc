@@ -1862,11 +1862,6 @@ void Runtime::register_mapper_failure_callback(MapperFailureCallback callback){
     mapper->register_mapper_failure_callback_(std::move(callback))
 }
 
-{
-  callbacks_.emplace_back(std::move(callback));
-}
-
-
 std::int32_t Runtime::finish()
 {
   if (!has_started()) {
